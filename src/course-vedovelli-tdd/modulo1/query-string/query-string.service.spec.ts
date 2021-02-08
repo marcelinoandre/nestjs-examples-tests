@@ -49,4 +49,31 @@ describe('QueryStringService', () => {
       }).toThrowError();
     });
   });
+
+  describe('Query string to object', () => {
+    it('should convert a query string to object', () => {
+      const qs = 'name=Andre&profession=developer';
+      expect(service.parse(qs)).toEqual({
+        name: 'Andre',
+        profession: 'developer',
+      });
+    });
+
+    it('should convert a query of a single key-value', () => {
+      const qs = 'name=Andre';
+
+      expect(service.parse(qs)).toEqual({
+        name: 'Andre',
+      });
+    });
+
+    it('should convert a query string to an object taking care of comma separated values', () => {
+      const qs = 'name=Andre&abilities=JS,TDD';
+
+      expect(service.parse(qs)).toEqual({
+        name: 'Andre',
+        abilities: ['JS', 'TDD'],
+      });
+    });
+  });
 });

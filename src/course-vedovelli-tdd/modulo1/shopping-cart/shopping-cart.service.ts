@@ -23,4 +23,25 @@ export class ShoppingCartService {
   remove(product) {
     remove(this.items, { product });
   }
+
+  summary() {
+    const total = this.getTotal();
+    const items = this.items;
+
+    return {
+      total,
+      items,
+    };
+  }
+
+  checkout() {
+    const { total, items } = this.summary();
+
+    this.items = [];
+
+    return {
+      total,
+      items,
+    };
+  }
 }

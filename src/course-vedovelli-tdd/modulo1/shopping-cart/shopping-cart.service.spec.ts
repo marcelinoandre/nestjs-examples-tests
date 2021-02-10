@@ -27,7 +27,7 @@ describe('ShoppingCartService', () => {
     });
 
     it('should return 0 when getTotal() is executed in a newly created instance', () => {
-      expect(service.getTotal()).toBe(0);
+      expect(service.getTotal().getAmount()).toBe(0);
     });
 
     it('should multiply quantity and price and receive the total amount', () => {
@@ -37,7 +37,7 @@ describe('ShoppingCartService', () => {
       };
       service.add(item);
 
-      expect(service.getTotal()).toEqual(70776);
+      expect(service.getTotal().getAmount()).toEqual(70776);
     });
 
     it('should ensure no more than on product exists at a time', () => {
@@ -51,7 +51,7 @@ describe('ShoppingCartService', () => {
         quantity: 1,
       });
 
-      expect(service.getTotal()).toBe(35388);
+      expect(service.getTotal().getAmount()).toBe(35388);
     });
 
     it('should update total when a product gets included and then removed', () => {
@@ -67,7 +67,7 @@ describe('ShoppingCartService', () => {
 
       service.remove(product);
 
-      expect(service.getTotal()).toEqual(41872);
+      expect(service.getTotal().getAmount()).toEqual(41872);
     });
   });
 
@@ -98,7 +98,7 @@ describe('ShoppingCartService', () => {
       });
 
       expect(service.summary()).toMatchSnapshot();
-      expect(service.getTotal()).toBeGreaterThan(0);
+      expect(service.getTotal().getAmount()).toBeGreaterThan(0);
     });
 
     it('should reset the cart when checlout() is called', () => {
@@ -109,7 +109,7 @@ describe('ShoppingCartService', () => {
 
       service.checkout();
 
-      expect(service.getTotal()).toEqual(0);
+      expect(service.getTotal().getAmount()).toEqual(0);
     });
   });
 });

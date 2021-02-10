@@ -1,14 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { find, remove } from 'lodash';
+import * as Money from 'dinero.js';
 
+// Dinero.defaultCurrency = 'BRL';
+// Dinero.defaultPrecision = 2;
 @Injectable()
 export class ShoppingCartService {
   items = [];
+  money = Money;
+  constructor() {
+    this.money.defaultCurrency = 'BRL';
+    this.money.defaultPrecision = 2;
+  }
 
   getTotal() {
     return this.items.reduce((acc, item) => {
-      return acc + item.quantity * item.product.price;
-    }, 0);
+      return acc.add(
+        this.money({ amount: item.quantity * item.product.price }),
+      );
+    }, this.money({ amount: 0 }));
   }
 
   add(item) {
@@ -25,7 +35,7 @@ export class ShoppingCartService {
   }
 
   summary() {
-    const total = this.getTotal();
+    const total = this.getTotal().getAmount();
     const items = this.items;
 
     return {
